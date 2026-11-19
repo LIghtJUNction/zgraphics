@@ -8,8 +8,14 @@ It accepts direct (`t=d`) RGB, RGBA and PNG image data, including zlib compressi
 base64 transfers, capability queries, image IDs/numbers, source cropping,
 placements, placement IDs, scaling, z-order and deletion. PNG decoding uses
 `zune-png`; the container is checked before decoding and nonessential metadata is
-removed. Animation, filesystem/shared-memory transfers, Unicode placeholders and
-relative placements are explicitly unsupported.
+removed. Kitty animation frames, frame composition and playback use a monotonic
+clock supplied by the host; the library starts no timer. APNG remains unsupported.
+
+File, temporary-file and shared-memory transfers use an optional host-supplied
+`ExternalReader`. The host owns object validation, bounded reads and unlink policy.
+Without that callback, external transfers are unavailable. Unicode placeholders
+and relative placements resolve through the same scene: the host supplies decoded
+`Placeholder` cells, and `draws_with_placeholders` returns the corresponding draws.
 
 ```rust
 use zgraphics::{Context, Graphics};
@@ -34,7 +40,8 @@ unpadded final base64 are accepted; an explicit nonfinal `m=1` chunk must still 
 a multiple of four without padding. The host owns ESC/ST framing and passes
 cursor/grid context. Images become visible only when `finish` receives ST.
 `Graphics::draws` returns sorted, borrowed straight-alpha RGBA images and source
-and destination rectangles. The renderer clips destinations to its viewport and
+and destination rectangles. The renderer honors `Draw::clip` while preserving the
+full source-to-destination transform, additionally clips to its viewport, and
 implements the documented z-order around text and explicit backgrounds.
 Pixel buffers use `Arc<Vec<u8>>`; a native renderer can retain a buffer until its
 graphics API has finished reading it. Renderers must release their retained
@@ -98,7 +105,47 @@ The DEC manual's DECSDM set/reset prose conflicts with modern xterm behavior;
 this implementation follows xterm: mode 80 set disables scrolling and uses the
 top-left origin, while reset enables scrolling at the text cursor.
 
-`tests/sixel_reference.py` compares independently generated fixture pixels,
-libsixel's `sixel2png`, and the real `zterm` parser at five input chunk sizes.
-Its checked-in measurement report is separate from renderer/native-platform
-acceptance; a pixel comparison does not prove GUI presentation.
+The host-level [Sixel reference test](https://github.com/LIghtJUNction/ztty/blob/f2db31d7ea35bf1a0554e76d69d2e44faafd0cab/tests/sixel_reference.py)
+compares fixture pixels, libsixel's `sixel2png`, and the `zterm` parser at five input
+chunk sizes. It remains in the host repository. This crate's tests exercise protocol
+and pixel behavior; they do not establish native GUI presentation.
+
+
+## Standalone crate and validation
+
+This repository contains the independent `zgraphics 0.2.0` workspace. It was
+extracted from [ztty at `f2db31d7`](https://github.com/LIghtJUNction/ztty/tree/f2db31d7ea35bf1a0554e76d69d2e44faafd0cab/crates/zgraphics);
+[the extraction record](https://github.com/LIghtJUNction/zgraphics/blob/main/docs/extraction.json)
+records the original file blobs. Public types remain under `zgraphics::`, and
+the module split changes neither their paths nor the method bodies.
+
+| Module | Responsibility |
+| --- | --- |
+| `lib.rs` | Public data, scene storage, quotas and content lifecycle |
+| `kitty.rs` | Kitty command execution, transfer completion and replies |
+| `sixel_scene.rs` | Sixel stream lifetime, scene commit and cell erasure |
+| `sixel.rs`, `decode.rs` | Bounded raster and image decoding |
+| `placement.rs` | Relative anchors and Unicode placeholder draw geometry |
+| `animation.rs` | Frame storage, composition and host-clock advancement |
+| `protocol.rs`, `stream.rs`, `transport.rs` | Command parsing, APC streaming and host I/O callback |
+
+Run the library checks from this directory with Rust 1.100 or newer:
+
+```sh
+cargo test --locked --lib
+cargo test --locked --doc
+cargo fmt --all -- --check
+cargo clippy --locked --all-targets -- -D warnings
+python3 tools/check_package.py
+cargo package --locked
+rustup target add wasm32-unknown-unknown x86_64-unknown-none
+cargo check --locked --lib --target wasm32-unknown-unknown
+cargo check --locked --lib --target x86_64-unknown-none
+```
+
+The manually invoked [candidate workflow](https://github.com/LIghtJUNction/zgraphics/blob/main/.github/workflows/ci.yml)
+checks one fixed commit on Linux, macOS and Windows, plus WebAssembly and bare-metal
+compilation, formatting, Clippy and the crate archive. It has read-only repository
+permissions and does not publish a crate or create a release. Compilation on a
+target does not establish renderer, filesystem callback or GUI behavior on that
+platform.
