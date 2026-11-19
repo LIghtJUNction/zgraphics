@@ -1,0 +1,139 @@
+{
+  "source_repository": "https://github.com/LIghtJUNction/ztty",
+  "source_commit": "f2db31d7ea35bf1a0554e76d69d2e44faafd0cab",
+  "source_path": "crates/zgraphics",
+  "crate_version": "0.2.0",
+  "checkpoint_scope": "Production Rust, tests, fixtures, README and LICENSE copied byte-for-byte; only Cargo workspace metadata made standalone, anchored package include and local ignores added.",
+  "source_files": [
+    {
+      "path": "Cargo.toml",
+      "git_blob": "3b6db1a4be8d6b579c4870e9da0d7b6007a2b16d",
+      "sha256": "f7f8e3ae641e277f59d20e2075378c89b445db34e3d70a375352e516384d94c0"
+    },
+    {
+      "path": "LICENSE",
+      "git_blob": "223dc232aa00af81dcf2c0622ee381b33fd0dc13",
+      "sha256": "97016fcf641f0ebb5c3fb6a0eda2e2bec82aecd443f3acd24a536499d5fa28a4"
+    },
+    {
+      "path": "README.md",
+      "git_blob": "bf4243153e812bc38a2ab2ef0e4b660309456d46",
+      "sha256": "0f4b4886cec6682432586f43178687e79289dc8b25e82911c0bd1388d5ac5a49"
+    },
+    {
+      "path": "src/animation.rs",
+      "git_blob": "b7ad4ac3d071706e3e22455cf3dcc373ee7e02b5",
+      "sha256": "f48802ce305cdb4f2b7583cabfebc19bba2767ae16097cb7fdf15bd0fec3f58f"
+    },
+    {
+      "path": "src/decode.rs",
+      "git_blob": "4f15237eda89cf86f353de0bb4dcf1a0f7462766",
+      "sha256": "ef7c165b1d53c5154c5b739da312089b4f9697022c357bb0c0430a034bab6f8d"
+    },
+    {
+      "path": "src/extension_tests.rs",
+      "git_blob": "7ec4c98b082fd415d1d51fd7f87a7fb3327544ac",
+      "sha256": "7513eb7c370ece924d14cf2c9a12206be60aa068f78d55b3a3b8e10d0bb8aa45"
+    },
+    {
+      "path": "src/lib.rs",
+      "git_blob": "d7b403d42b41443e6ff864e504a92fe5555189df",
+      "sha256": "7181549920700dda9d82f798056a1f06f401b1b12eb141fbd089fa172a288d31"
+    },
+    {
+      "path": "src/placement.rs",
+      "git_blob": "658fd0cd5ba3db0aa7654e301295b1138a107b1d",
+      "sha256": "48acfb7003676938b0739874ad0692e8cab82a69512665ab55c98bdf8c8de4ed"
+    },
+    {
+      "path": "src/protocol.rs",
+      "git_blob": "e59065a7d7650ad2050013f607127172213f6dc7",
+      "sha256": "5a55577d5ffedc1f53b5732277112f88f2bd268350f0f8f135cadcaa20ab2929"
+    },
+    {
+      "path": "src/sixel.rs",
+      "git_blob": "89ca6b41949172eb4defd45e8bd708c169a952ab",
+      "sha256": "94d893643d8147b3e98f5ad8b4d4c5e23366d106c6ff0077117a18bdd073c41f"
+    },
+    {
+      "path": "src/sixel_tests.rs",
+      "git_blob": "7d7dc2d6353dcdff6e3c5b3f5425032c03893113",
+      "sha256": "4162b6364124c813f6b4e81b265021ccd62f3a3069c77d4cba0291fabc828da3"
+    },
+    {
+      "path": "src/stream.rs",
+      "git_blob": "f98b7958bf2d07e88bad164da7d0701a65dd2c03",
+      "sha256": "9a71761d5199a1099119638268df3c070569988c09149119ffd7dfb11fbb347a"
+    },
+    {
+      "path": "src/tests.rs",
+      "git_blob": "1b04b53f925a2633d35bf2e0f74c716689bd0cef",
+      "sha256": "7b9bdec2b2a8517076c592799dfb6860f10ea559c40331f9d1b034bf92d2d11d"
+    },
+    {
+      "path": "src/transport.rs",
+      "git_blob": "a2083c218e93fdb683b8b843988765635f682180",
+      "sha256": "3013d094951f2540bb058779ab6f3ad854beb6e15891c1e37fbf74672530e115"
+    },
+    {
+      "path": "tests/data/adam7.png",
+      "git_blob": "72beef7fe56850792c91886f806b4f6e96e45ed7",
+      "sha256": "bd6ec7125c2cc6f58ece0d563465092d08c0cb61ef6ce37094e8bd90aa53cef3"
+    },
+    {
+      "path": "tests/data/gray-alpha.png",
+      "git_blob": "35804cc734b4d998ec2a54fdf93d96d1fdde612a",
+      "sha256": "a5f0df4664ccbe20e78ff7fdb36ff31196322c490375ae5a6055d35ebc97584b"
+    },
+    {
+      "path": "tests/data/gray.png",
+      "git_blob": "b281decffc9c69f07967428d679f9eceb3b33642",
+      "sha256": "d88558ab32a01e8eb055a7ca943bc3e9e26c8bd296eb52854400047ef21b9ec5"
+    },
+    {
+      "path": "tests/data/inflate-bomb.png",
+      "git_blob": "972104f5451d1486230831255adbcba08a98dee4",
+      "sha256": "622172ba76ba12d54c222dbbdd1d508df852edea5eef74cea6153e53e5a47f2a"
+    },
+    {
+      "path": "tests/data/large-inline-rgb.zlib",
+      "git_blob": "10da16156b91a3e15c6a3154d159f937351d06ba",
+      "sha256": "bf9348d65798b046c1c8e3be51cdfa45ef82169fb91e86df9dcfa4a6a197afde"
+    },
+    {
+      "path": "tests/data/metadata.png",
+      "git_blob": "8ad95d2d39fd3b59790f289dd653f84cab967fe0",
+      "sha256": "c061ef1dbc3bbd8f8a2bc8ea4501a6ce437ee482b028b76402b83e7dd487e328"
+    },
+    {
+      "path": "tests/data/oversized.png",
+      "git_blob": "a62d5ae2199c36454139c95ab065de2d84008c87",
+      "sha256": "529b5b992d1ad8849402782532ad73a9d85e5802738bbf6298ba401c669a95e5"
+    },
+    {
+      "path": "tests/data/palette.png",
+      "git_blob": "9236e2c1fede30a0ca1f189b01d1be99237ef22e",
+      "sha256": "bd09abaf98b2725ba2e405634cccf5372b131dddec0d2000e02eaa5c4bdbb7b1"
+    },
+    {
+      "path": "tests/data/rgb.png",
+      "git_blob": "71bad51658d050fc1e5d9dc173df588e598627b5",
+      "sha256": "270e0f5225d10d622609824f83aab07b24ea4c11cbd5d7de0b6ef8b439c517bc"
+    },
+    {
+      "path": "tests/data/rgb.zlib",
+      "git_blob": "31f3232139fdad3cff7a4e6ffbe21e181879ef83",
+      "sha256": "3bb6995c3520cfc37fb25c328b3dc440f7569eaeaeb1dbd5137b43a85b065a27"
+    },
+    {
+      "path": "tests/data/rgba.png",
+      "git_blob": "4f90bf19abff0d18a288488370c38ab1d4798086",
+      "sha256": "a19ac7ccc3307baa3c0664604822592018f5bb7883cd87fa455468c0468f639b"
+    },
+    {
+      "path": "tests/data/rgba16.png",
+      "git_blob": "fd2844047145fd6e645a1a9725f9243c992e69ab",
+      "sha256": "7b4022be6f177825d413802b52a97f3b811f980c4100ab76d42fdac13ccf4d36"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[package]
+name = "zgraphics"
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.100"
+license = "MIT"
+authors = ["LIghtJUNction"]
+repository = "https://github.com/LIghtJUNction/zgraphics"
+description = "Bounded no_std Kitty graphics protocol, PNG decoding and terminal image placement"
+readme = "README.md"
+include = ["/src/**", "/tests/data/**", "/README.md", "/LICENSE", "/Cargo.toml"]
+keywords = ["terminal", "kitty", "graphics", "png", "no-std"]
+categories = ["no-std", "multimedia::images", "parsing"]
+
+[dependencies]
+zune-core = { version = "=0.5.3", default-features = false }
+zune-png = { version = "=0.5.2", default-features = false }
+zune-inflate = { version = "=0.2.54", default-features = false, features = ["zlib"] }
+
+[workspace]
