@@ -8,11 +8,12 @@ probe.mkdir(parents=True, exist_ok=True)
 for name in ("README.md", "LICENSE"):
     (probe / name).write_text("This ignored probe must not enter the crate.\n")
 
-paths = set(
-    subprocess.check_output(
+paths = {
+    path.replace('\\', "/")
+    for path in subprocess.check_output(
         ["cargo", "package", "--locked", "--list"], cwd=root, text=True
     ).splitlines()
-)
+}
 required = {"Cargo.toml", "Cargo.lock", "README.md", "LICENSE"}
 required.update(path.relative_to(root).as_posix() for path in (root / "src").glob("**/*.rs"))
 required.update(

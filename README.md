@@ -149,3 +149,11 @@ compilation, formatting, Clippy and the crate archive. It has read-only reposito
 permissions and does not publish a crate or create a release. Compilation on a
 target does not establish renderer, filesystem callback or GUI behavior on that
 platform.
+
+The separate [release workflow](https://github.com/LIghtJUNction/zgraphics/blob/main/.github/workflows/release.yml)
+is also manual. It prepares an optional version bump or resumes an exact existing
+candidate, runs the full candidate workflow, then verifies the package's embedded
+Git identity and crates.io checksum before pushing the matching tag and completing
+the GitHub Release. Repeating an interrupted release requires matching package
+bytes and the same tag commit. Publication credentials are supplied only when
+the repository owner invokes that workflow.
