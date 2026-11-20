@@ -100,6 +100,7 @@ impl Graphics {
         background: [u8; 3],
         palette: Option<&SixelPalette>,
     ) {
+        self.query_only = false;
         self.abort_transfer();
         self.sixel = Some(Box::new(sixel::Decoder::new(
             self.limits,

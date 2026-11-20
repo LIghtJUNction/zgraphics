@@ -236,6 +236,7 @@ pub struct Graphics {
     used: usize,
     revision: u64,
     next_id: u32,
+    query_only: bool,
     cell_width: u32,
     cell_height: u32,
     visible_rows: usize,
@@ -259,6 +260,7 @@ impl Graphics {
             used: 0,
             revision: 0,
             next_id: 1,
+            query_only: true,
             cell_width: 8,
             cell_height: 16,
             visible_rows: 24,
@@ -285,6 +287,26 @@ impl Graphics {
     pub fn placement_count(&self) -> usize {
         self.placements.len()
     }
+
+    /// Whether only completed, stateless protocol queries have been processed.
+    ///
+    /// A fresh store and completed Kitty `a=q` probes return true. A pending
+    /// transfer, including one with zero payload bytes, returns false. Any
+    /// non-query Kitty command or Sixel input permanently makes this false,
+    /// even after `clear`: protocol identities and allocation counters are not
+    /// reconstructed by creating an empty store.
+    ///
+    /// This is a conservative query-only checkpoint boundary, not graphics
+    /// serialization. Hosts must also finish their framing/parser input, retain
+    /// queued replies and restore viewport and process-local callbacks.
+    pub fn is_query_only(&self) -> bool {
+        self.query_only
+            && self.pending.is_none()
+            && self.sixel.is_none()
+            && self.images.is_empty()
+            && self.placements.is_empty()
+    }
+
     pub fn is_empty(&self) -> bool {
         self.placements.is_empty()
     }
@@ -531,6 +553,10 @@ impl Graphics {
 extern crate std;
 #[cfg(test)]
 mod extension_tests;
+#[cfg(test)]
+mod host_erase_tests;
+#[cfg(test)]
+mod query_only_tests;
 #[cfg(test)]
 mod sixel_tests;
 #[cfg(test)]

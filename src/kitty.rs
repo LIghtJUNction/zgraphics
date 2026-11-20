@@ -21,6 +21,20 @@ impl Graphics {
         self.process(command, payload, context, replies)
     }
 
+    /// Erase visible image placements for the host's terminal erase-display.
+    ///
+    /// This has the same viewport, partial-transfer cancellation, deletion and
+    /// reply behavior as the fixed Kitty `Ga=d` command. It retains the prior
+    /// query-only history: an internal screen erase is not a newly received
+    /// graphics command, and cannot erase existing non-query protocol history.
+    /// External Kitty input must continue to use `command` or `CommandStream`.
+    pub fn erase_visible(&mut self, context: Context, replies: &mut Vec<u8>) -> Outcome {
+        let query_only = self.query_only;
+        let outcome = self.command(b"Ga=d", context, replies);
+        self.query_only = query_only;
+        outcome
+    }
+
     pub(super) fn reject_transfer(&mut self, error: &'static str, replies: &mut Vec<u8>) {
         if let Some(transfer) = self.pending.take() {
             self.respond(&transfer.command, transfer.command.id, error, replies);
@@ -53,6 +67,7 @@ impl Graphics {
             })
         {
             let mut transfer = self.pending.take().unwrap();
+            self.query_only &= transfer.command.action == b'q';
             if let Some(q) = command.quiet_override {
                 transfer.command.quiet = q;
             }
@@ -69,6 +84,7 @@ impl Graphics {
             }
             return self.finish(transfer.command, transfer.bytes, context, replies);
         }
+        self.query_only &= command.action == b'q';
         self.abort_transfer();
         if command.id != 0 && command.number != 0 {
             self.respond(
